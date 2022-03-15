@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assignment04</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Assignment03</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14515,98 +14515,289 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Assignment-04">Assignment 04<a class="anchor-link" href="#Assignment-04">&#182;</a></h1><p><strong>Due:</strong> 2022-03-10, 11:59 PM, as a Jupyter notebook (with related files) submitted via your repo in the course GitHub organization.  Edit the provided Solutions04 notebook with your solutions.</p>
+<h1 id="Assignment-03">Assignment 03<a class="anchor-link" href="#Assignment-03">&#182;</a></h1><p><strong>Due:</strong> Thursday, 2022-02-24, 11:59 PM, as a Jupyter notebook submitted via your repo in the course GitHub organization (see the detailed instructions in our LabResources repo).  Edit the provided Solutions03 notebook with your solutions.  All subproblems (or problems with no subproblems) are worth 1 point unless otherwise noted (grading will give fractional points as appropriate).  Be sure to include the required Python module alongside your solutions notebook in your repo.</p>
+<p>In derivations, use a bit of text to explain your steps, but you needn't write an essay!</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="0.-Add/commit-a-.gitignore-file-in-your-assignments-repo">0. Add/commit a .gitignore file in your assignments repo<a class="anchor-link" href="#0.-Add/commit-a-.gitignore-file-in-your-assignments-repo">&#182;</a></h2><p>Python, Jupyter, and other tools we'll use in the future create auxilliary files that are useful for running scripts, modules, and notebooks locally, but that should not be tracked and shared in your repo. Git supports the use of a <code>.gitignore</code> file at the top level of a repo, identifying files or groups of files (and folders) that should be ignored by Git. This file can also be used to make Git ignore platform-specific files that aren't useful to share, like the <code>.DS_Store</code> file that the macOS Finder creates in many folders (to hold file metadata).</p>
-<p>We are providing a <code>.gitignore</code> file to use in your assignment repo. <strong>Correctly adding and commiting the <code>.gitignore</code> file is required.</strong> You will <em>lose 0.5 point if it is not done correctly</em>. Fortunately, it's easy to do:</p>
+<h2 id="1.-The-%22Or%22-rule">1. The "Or" rule<a class="anchor-link" href="#1.-The-%22Or%22-rule">&#182;</a></h2><p>Recall the disjunction (logical "or") rule:
+$$
+P(A\lor B) = P(A) + P(B) - P(A\land B) \qquad ||\;\mathcal{C}.
+$$
+In the majority of applications, the set of propositions of interest (about either parameters or data) typically comprise an <em>exhaustive, mutually exclusive</em> set.  (In the book <em>Think Bayes</em>, author Allen Downey uses the term <em>suite</em> to denote such a set of propositions; I like that!)  For mutually exclusive propositions, $P(A\land B) = 0$. For example, if a parameter has one value, it can't simultaneously take on another value; similarly for the value of a datum. In this case, the "or" rule simplifies (dropping the $\mathcal{C}$ henceforth):
+$$
+P(A\lor B) = P(A) + P(B).
+$$
+It's simpler than the full "or" rule, though we've only dropped 1 term.</p>
+<p>When we derived the LTP, we used this simpler "or" rule, but extended to an arbitrary number of propositions, $B_i$, comprising a suite. The purpose of this exercise is to help you appreciate the impact of working with a mutually exclusive set of alternatives.  It simplifies things more than you may have realized.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1 celltag_points=2" data-mime-type="text/markdown">
+<h3 id="Problem-1-(2-points):">Problem 1 (2 points):<a class="anchor-link" href="#Problem-1-(2-points):">&#182;</a></h3><blockquote><p>Use the "or" and "and" rules to find an expression for $P(A\lor B \lor C)$, <em>not</em> assuming that $A$, $B$, and $C$ are mutually exclusive. Seek a result using only probabilities for the individual propositions, and "and" combinations of them. (You can use a comma instead of $\land$ for "and" if you wish.)  You may use associativity of "or" and "and;" that is, $A\lor (B \lor C) \equiv (A\lor B) \lor C$, and $A\land (B \land C) \equiv (A\land B) \land C$.</p>
+<p>Do this in two steps:</p>
 <ul>
-<li>Sync your copy of our LabResources folder using <code>git pull</code> (which you probably already did to get your copy of this assignment).</li>
-<li><strong>Copy</strong> (do not just move) the <code>dot-gitignore</code> file to the top level of your assignments repor. For me, I would put it inside my <code>tjl9-BDAOrg</code> folder, so its path would be `.../tjl9-BDAOrg/dot-gitignore'.</li>
-<li><strong>Rename</strong> the file to <code>.gitignore</code>. On many platforms, this will cause the file to disappear from file listings (e.g., it will vanish in a macOS Finder window, and it will not appear in a Linus <code>ls</code> file listing). Don't worry, it's still there. The leading dot makes <code>.gitignore</code> a hidden file on many platforms.</li>
-<li>Use Git to add and commit the <code>.gitignore</code> file.</li>
+<li>Copy the following incomplete truth tables into your solution cell and complete them. For each table, you should find that the two "starred" columns (with a leading asterisk—that's not a logic symbol!) have the same truth values in every row, indicating they are logically equivalent. These tables thus establish two <em>rules of replacement</em>: where you see one of these formulas, you may substitute the other.  MathJax may make the headings hard to read, so to clarify: the first table aims to show $X\land Y\land X \equiv X\land Y$ (so you can drop repeated symbols in a multiple "and"), and the second table aims to show a kind of distributive rule: $X\land (Y\lor Z) \equiv (X\land Y)\lor (X\land Z)$.</li>
 </ul>
-<p>That's it!</p>
-<p>If you use a tool (editor, IDE) that creates auxilliary files or folders in your repo that you don't want to track, feel free to <strong>add</strong> entries to the <code>.gitignore</code> file, directing Git not to track those files. But please do not remove entries from it.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="1.-Enhancing-the-UnivariateBayesianInference-class">1. Enhancing the <em>UnivariateBayesianInference</em> class<a class="anchor-link" href="#1.-Enhancing-the-UnivariateBayesianInference-class">&#182;</a></h2><p>The assignment directory includes a <code>univariate_bayes.py</code> file that implements a <code>univariate_bayes</code> module with a single class, <code>UnivariateBayesianInference</code>; this code was introduced in Lab06.  This class is meant to be used as a <strong>base class</strong> that is inherited by a subclass written to solve univariate inference problems with a specific type of likelihood function and data.  Lab06 provided examples for binomial and Poisson cases.  For this problem, you will enhance the capabilities of <code>UnivariateBayesianInference</code>.</p>
-<p>Your repo also has a <code>binomial_poisson.py</code> file, also meant to be used as module, with two classes that subclass <code>UnivariateBayesianInference</code>:  <code>BinomialInference</code> and <code>PoissonRateInference</code>.  We discussed and used these classes in Lab06.  There we created instances of those classes in the same file that defined them; here, you'll import the classes from the module and work with them in your solutions notebook.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1.1 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-1.1-(2-points):">Problem 1.1 (2 points):<a class="anchor-link" href="#Problem-1.1-(2-points):">&#182;</a></h3><blockquote><p>Add code to the <code>__init__</code> method of the <code>UnivariateBayesianInference</code> class (defined in <code>univariate_bayes.py</code>) that computes the mean and standard deviation of the parameter's posterior PDF.  Store the results in two new data attributes:</p>
-<ul>
-<li><code>mean</code>, containing the posterior mean of the value of the parameter by quadrature</li>
-<li><code>std</code>, containing the posterior standard deviation by quadrature</li>
-</ul>
-<p>You may use quadrature functions in <code>NumPy</code> or <code>SciPy</code>. Be sure to maintain comments and docstrings:  revise the module docstring to note that you have revised the module's code, and provide brief comments for the added code.</p>
+<p><em>Hint</em>: You may find it easier to work on the tables using the <a href="https://www.tablesgenerator.com/markdown_tables">Markdown Tables generator - TablesGenerator.com</a> web page. Note that you can copy the Markdown for a table in a notebook to your clipboard, and load it into the web page using the <code>File-&gt;Paste...</code> command on the web page. Then you can revise it there, and copy the result back.</p>
 </blockquote>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1.2 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-1.2-(2-points):">Problem 1.2 (2 points):<a class="anchor-link" href="#Problem-1.2-(2-points):">&#182;</a></h3><blockquote><p>Test the <code>mean</code> and <code>std</code> computations by creating one instance each of <code>PoissonRateInference</code> and <code>BinomialInference</code> in your solution notebook (with input arguments of your choosing) and comparing your quadrature-based mean and standard deviation posterior summaries with analytical formulas presented in lectures.  Do the comparison by calculating the percentage difference between the quadrature-based and formula-based results and displaying the the results and percentage differences in the notebook. Display the results with an appropriate level of precision (e.g., 2 or 3 significant digits), using Python's string formatting capability.  (See <a href="https://mkaz.blog/code/python-string-format-cookbook/">Python String Format Cookbook – mkaz.blog</a> for tips on this.)</p>
-</blockquote>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.-Inference-with-the-Cauchy-distribution">2. Inference with the Cauchy distribution<a class="anchor-link" href="#2.-Inference-with-the-Cauchy-distribution">&#182;</a></h2><p>In Lab06 and Problem 1 the <code>UnivariateBayesianInference</code> base class was used to numerically compute results for inferences that we can handle analytically.  But this base class can also be used for problems that are not analytically tractable.  In this problem, you'll use it to do inference with data modeled with a <strong>Cauchy distribution</strong>.</p>
-<p>The Cauchy distribution is a special case of the Student's $t$ distribution covered in Lec08; it corresponds to Student's $t$ with degrees of freedom parameter $\nu=1$. It has an undefined mean and an infinite variance.  It is troublesome to work with in frequentist statistics.  Even it's maximum likelihood estimator has complicated sampling properties that pose not just computational challenges, but conceptual ones (the best frequentist methods require adopting something called the <em>conditional frequentist approach</em>, related to the likelihood principle).  In Bayesian inference, it poses no conceptual difficulties, but it must be handled numerically—which you'll do here.</p>
-<p>The Cauchy distribution is known in physics as the <em>Lorentzian distribution</em>, where in certain circumstances it describes the profile of spectral lines, and the distribution of particle mass peaks in accelerator experiments.  It also appears in problems where the ratio of two quantities with normal errors is of interest; when the quantities are uncorrelated with zero mean, the PDF for the ratio is a Cauchy distribution.  As noted above, the Student's $t$ distribution with 1 degree of freedom is a Cauchy distribution.  It also arises in geometric inference problems, as you will see in this problem.</p>
-<p>You can find basic information about the Cauchy distribution <a href="http://en.wikipedia.org/wiki/Cauchy_distribution">on Wikipedia</a> and in the <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm">NIST Engineering Statistics Handbook</a>.</p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.1 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-2.1-(2-points):">Problem 2.1 (2 points):<a class="anchor-link" href="#Problem-2.1-(2-points):">&#182;</a></h3><p>A rod of radioactive material is a distance $d$ behind a barrier (e.g., this could be a fuel rod inside a nuclear reactor). A narrow sensor strip is on the barrier, oriented orthogonal to the rod (and not near either of its ends). The rod is at an unknown position, $x_0$, along the sensor.  The sensor records the locations of $N$ gamma rays emitted by the rod, denoted $x_i$ (for $i=1$ to $N$).  We'll assume that $d$ is small compared to the length of the sensor, so that the sensor may be considered essentially infinite in length.</p>
-<p>The geometry is shown in the following figure, oriented looking down along the rod (shown as a large dot).</p>
-<p><img src="CauchyGeometry.png"/></p>
-<blockquote><p>Assume the rod emits gamma rays isotropically (i.e., with a uniform distribution in the angle $\theta$; consider only angles corresponding to detectable gamma rays).  Show that the PDF for the detected location of a single gamma ray, $x$, is a Cauchy distribution with location parameter $x_0$ and scale parameter $d$.</p>
-</blockquote>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.2 celltag_points=5" data-mime-type="text/markdown">
-<h3 id="Problem-2.2-(5-points):">Problem 2.2 (5 points):<a class="anchor-link" href="#Problem-2.2-(5-points):">&#182;</a></h3><p>Implement and demonstrate inference for the Cauchy location parameter, $x_0$ (using a uniform prior):</p>
+<table>
+<thead><tr>
+<th>X</th>
+<th>Y</th>
+<th>* X $\land$ Y</th>
+<th>* (X $\land$ Y) $\land$ X</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead><tr>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+<th>Y $\lor$ Z</th>
+<th>* X $\land$ (Y $\lor$ Z)</th>
+<th>X $\land$ Y</th>
+<th>X $\land$ Z</th>
+<th>* (X $\land$ Y) $\lor$ (X $\land$ Z)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <blockquote><ul>
-<li>Create a Python module <code>cauchy.py</code> with a class <code>CauchyLocationInference</code> that implements inference for the location of Cauchy-distributed data with a <em>known</em> scale parameter.</li>
-<li>In the notebook, define a function with signature <code>cauchy_case(x0, d, N, plot=True)</code> that does the following:<ol>
-<li>Use <code>scipy.stats.cauchy</code> to simulate a dataset of size <code>N</code> from a Cauchy distribution with location and scale <code>x0</code> and <code>d</code>.</li>
-<li>Create an instance of your <code>CauchyLocationInference</code> class for inferring <code>x0</code> with the simulated data.</li>
-<li>If the <code>plot</code> argument is True, plot the PDF for <code>x0</code>.</li>
-<li>If the <code>plot</code> argument is True, show the posterior mean for <code>x0</code> on the plot by using the computed <code>mean</code> data attribute, evaluating the PDF at that value, and plotting a marker (e.g., a large dot or diamond) on the curve just plotted in step 3.</li>
-<li>Return 2 (scalar) values: the value of the posterior mean, and the mean value of the samples in the simulated dataset.</li>
+<li>With those replacement rules in hand, proceed with deriving the 3-proposition "or" rule.</li>
+</ul>
+<p><em>Hint</em>: You might guess from the 2-proposition "or" rule that the answer is $P(A\lor B \lor C) = P(A) + P(B) + P(C) - P(A\land B \land C)$. But that's not right. It's quite a bit more complicated (which is why having mutually exclusive alternatives is a great help).</p>
+</blockquote>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="2.-Discovery-chains">2. Discovery chains<a class="anchor-link" href="#2.-Discovery-chains">&#182;</a></h2><p>Suppose you try to learn whether a coin flipper is biased by doing two experiments: you first count 39 heads in 100 flips, and then 55 heads in another 100 flips. From a Bayesian perspective, you could analyze these data by first finding a posterior using the 39/100 data, and then using that posterior as a prior for computing a final posterior considering in addition the 55/100 data. But you might also consider pooling the data, and just doing one calculation, computing a posterior based on seeing 94 heads in 200 flips. You might intuitively expect the two calculations will agree—and they do! This problem explores this kind of agreement.</p>
+<p>The parameter estimation problems addressed in lectures 5 through 7 involve the use of <em>conjugate families</em>: prior/likelihood pairs such that if the prior is a distribution in a particular family, and the likelihood function is built from a sampling distribution in the partner family, then the posterior distribution is another distribution from the prior's family.</p>
+<p>A handy feature of conjugate families is that inferences can be easily chained, with the posterior from inference based on an initially considered dataset, $D_1$, serving as the prior for analysis of a subsequently considered dataset, $D_2$, and producing an updated posterior that can be found by simple manipulation of the parameters in the prior family.</p>
+<p>For example, in Lec05 we considered inference of a binary outcome probability, $\alpha$, with binomial data comprising $n$ successes in $N$ trials.  We found the posterior PDF for $\alpha$, based on a beta PDF prior with parameters $(a,b)$:
+\begin{align}
+p(\alpha|n,M') 
+  &amp;\propto \mathop{\mathrm{Beta}}(\alpha|a,b) \times \mathop{\mathrm{Binom}}(n|\alpha,N)\\
+  &amp;\propto \alpha^{a-1} (1-\alpha)^{b-1} \times \alpha^{n} (1-\alpha)^{N-n}\\
+  &amp;\propto \alpha^{n+a-1} (1-\alpha)^{N-n+b-1}.
+\end{align}
+That is, the posterior is $\mathop{\mathrm{Beta}}(\alpha|n+a,N-n+b)$. So schematically, the update rule, telling us how a beta prior is modified into a beta posterior, is:
+$$
+\boxed{(a,\; b) \quad\Rightarrow\quad (n+a,\; N-n+b).}
+$$
+Thus if we get additional data composed of $n'$ successes in $N'$ new trials, the final posterior PDF will again be a beta PDF, with parameters found by chaining/iterating application of the boxed update rule:
+$$
+(a,\; b) \quad\Rightarrow\quad (n+a,\; N-n+b) \quad\Rightarrow\quad (n+n'+a,\; N+N'-n-n'+b).
+$$</p>
+<p>A simple but interesting consequence of this update rule is that we get the same overall posterior if we <em>pool the data</em>, i.e., consider a <em>single</em> binomial dataset composed of $m=n+n'$ successes in $M=N+N'$ trials.  Applying the single-stage update rule to this pooled data gives
+$$
+(a,\; b) \quad\Rightarrow\quad (m+a,\; M-m+b) \quad=\quad (n+n'+a,\; N+N'-n-n'+b),
+$$
+the same result as we found from chaining the inferences.</p>
+<p>This result is nearly trivial because, in the binomial IID sampling setting, the probability for the 2nd dataset is independent of the outcome comprising the 1st dataset, if we are given $\alpha$ (as we are in a likelihood function—the probability for the data <em>given</em> the values of any parameters). Independence implies that the likelihood function based on the pooled data is just the product of the likelihood functions considering each dataset separately, and consistency follows easily from this.</p>
+<p>In fact, the consistency of the chained and pooled inferences is a more general result that <em>does not require the two datasets to have sampling distributions that are conditionally independent</em> (i.e., independent given the parameter).</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2 celltag_points=2" data-mime-type="text/markdown">
+<h3 id="Problem-2-(2-points):">Problem 2 (2 points):<a class="anchor-link" href="#Problem-2-(2-points):">&#182;</a></h3><blockquote><p>Prove the <em>general</em> consistency of chained and joint inferences based on using two datasets to estimate a parameter, $\theta$ (general in the sense of not assuming conditional independence).</p>
+<ol>
+<li>Use Bayes's theorem to write down the posterior PDF for $\theta$ based on data $D_1$.</li>
+<li>Use the posterior from (1) as the prior for inference of $\theta$ additionally considering new data, $D_2$, using Bayes's theorem to compute an overall posterior PDF for $\theta$, $p(\theta|D_1,D_2,\mathcal{C})$. <em>Do not assume that the joint sampling distribution for $(D_1,D_2)$ factors</em>:
+$$
+p(D_1,D_2|\theta) \ne p(D_1|\theta)\times p(D_2|\theta). \qquad ||\; \mathcal{C}
+$$</li>
+<li>Now suppose you start with the same initial prior used in (1), but consider the two datasets together. Compute the posterior $p(\theta|D_1,D_2,\mathcal{C})$ in a single step, considering $(D_1,D_2)$ as a single, pooled dataset.</li>
+<li>Show that the results of (2) and (3) are equal (i.e., use the rules of probability theory to show that one result equals the other).</li>
 </ol>
-</li>
-<li>Run the function 5 times, with the same arguments, to produce a single plot with 5 example posterior PDFs. Choose values for <code>x0</code> and <code>d</code> as you wish.  Use a small sample size (say, $N=5$).  Be sure to label all plot axes in this exercise, and feel free to adjust plot parameters (axis limits, line widths, etc.) to help communicate the results.</li>
+<p>For convenience, you may drop $\mathcal{C}$ from the notation, since the same contextual information is being used throughout.</p>
+<p><em>Hint:</em> You shouldn't have to write out any marginal likelihoods (i.e., writing them as integrals of prior times likelihood) in order to prove consistency.</p>
+</blockquote>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="3.-The-normal-normal-conjugate-model">3. The normal-normal conjugate model<a class="anchor-link" href="#3.-The-normal-normal-conjugate-model">&#182;</a></h2><p>In Lec07 you were <em>told</em> that a normal prior is a conjugate prior for the likelihood function for the mean of a set of data modeled with IID normal additive noise, and you were given equations for how the posterior mode (or mean) and the posterior width (standard deviation) depend on both the data and the prior mean and width (see Lec07, slide 11).  For this problem, you'll <em>derive</em> those results, and duplicate a plot from the lecture, using both analytical and numerical approaches.</p>
+<p>For the derivation, you'll need to a "completing the square" calculation, a bit like the one done in Lec07 to show that the IID normal sampling distribution has two sufficient statistics, the sample mean, $\bar{d}$, and the root-mean-square residual, $r$ (using notation from the lecture). Here's a quick refresher about completing the square.</p>
+<p>A 2nd-degree polynomial function,
+$$
+f(x) = A_2 x^2 + A_1 x + A_0,
+$$
+describes a parabolic curve (concave up if $A_2$ is positive, and concave down if it's negative).  A simpler way to parameterize such a curve uses the location of the extremum (minimum or maximum), $x_0$, and the height of the curve at that point, $h$:
+$$
+f(x) = a(x - x_0)^2 + h.
+\label{f-sqr}
+$$
+In this parameterization, $a$ specifies the width of the curve (whether it's a broad or narrow parabola).
+Completing the square involves manipulating the first expression to identify $(a, x_0, h)$ in the second expression.</p>
+<p>To see how this could be done, start by expanding the squared term in the second expression:
+$$
+f(x) = a(x^2 - 2x_0 x + x_0^2) + h.
+$$
+Note that the location parameter, $x_0$, can be identified as the multiplier of the linear term, divided by the factor $(-2a)$ (with that $a$ corresponding to the factor outside the parentheses).  This observation motivates the following procedure to get from the 1st expression for $f(x)$ to the second:</p>
+<p>Start by rewriting the polynomial in this form:
+$$
+f(x) = a x^2 -2bx + c.
+$$
+This corresponds to setting $a=A_2$, $b=-A_1/2$, and $c=A_0$. In practice, when doing "completing the square" with quadratic polynomials arising in Gaussians, we'll already have the polynomial in this form.</p>
+<p>Next, group together the $x^2$ and $x$ terms, factoring out $a$:
+$$
+f(x) = a \left( x^2 -2\frac{b}{a}x\right) + c.
+$$
+This identifies $x_0$ as $b/a$.  We can get both the $x^2$ term and the linear cross term by squaring $(x - x_0)$, but that introduces an extra constant term that doesn't appear in $f(x)$ (the last term here):
+$$
+a\left( x - \frac{b}{a}\right)^2 = a x^2 - 2bx + \frac{b^2}{a}.
+$$
+So for the final step, we subtract off that extra term:
+$$
+f(x) = a\left(x - \frac{b}{a}\right)^2 - \frac{b^2}{a} + c.
+$$
+We now have $f(x)$ in the form of a "perfect square" plus a constant, identifying the parabola's parameters.  For Gaussians, $x_0$ is the location parameter (mean), and $a$ corresponds to the inverse variance (also called the <em>precision</em>).</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=3.1 celltag_points=2" data-mime-type="text/markdown">
+<h3 id="Problem-3.1-(2-points):">Problem 3.1 (2 points):<a class="anchor-link" href="#Problem-3.1-(2-points):">&#182;</a></h3><blockquote><p>Use <em>completing the square</em> to derive the equations for the posterior mean, $\tilde{\mu}$, and the posterior width (standard deviation), $\tilde{w}$.</p>
+<p><strong><em>Hint 1:</em></strong> As noted in lecture, the algebra for manipulating Gaussians is often bit easier if you work in terms of the precision, $\tau \equiv 1/\sigma^2$, rather than the standard deviation, $\sigma$.  So consider working in terms of the prior precision, $\tau_0 \equiv 1/w_0^2$, the precision for the likelihood function, $\tau \equiv 1/w^2$, and the posterior precision, $\tilde{\tau} \equiv 1/\tilde{w}^2$.  Convert your expressions for the posterior mean and precision into formulas involving the widths at the end.</p>
+<p><strong><em>Hint 2:</em></strong> To identify the location and width parameters, you don't care about the constant terms arising when you complete the square (they merely adjust the normalization constant of the final Gaussian).  So feel free to gather uninteresting constants in an unspecified constant, $C$, as you work.  This will save a small bit of algebraic effort.</p>
+</blockquote>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=3.2 celltag_points=2" data-mime-type="text/markdown">
+<h3 id="Problem-3.2-(2-points):">Problem 3.2 (2 points):<a class="anchor-link" href="#Problem-3.2-(2-points):">&#182;</a></h3><blockquote><p>Create and demonstrate a Python function that can produce plots like those shown on slide 14 of Lec07, showing the prior PDF, likelihood function, and posterior PDF for the normal-normal problem.  Do not implement Bayes's theorem directly (i.e., multiplying prior times likelihood function and normalizing)—you'll do that for Problem 3.3.  Here simply use the analytical results given in the lecture.  (You need not match the lecture figure exactly in terms of choices like color choices or the scale of the likelihood function.)</p>
+<p>Write the function in a Python module, for importing into your solution notebook.  A template module is provided as <code>norm_norm.py</code>.  Write your code in that file (you can test/debug either in your notebook, or by running it at the command line with <code>ipython</code>).  Import the module into your notebook and use the imported functions to produce the requested plots in your notebook.</p>
+<ul>
+<li>Use the function signature <code>plot_norm_norm1(mus, mu0, w0, dbar, w)</code>, with the five arguments denoting a vector of $\mu$ values for computing/plotting, the prior mean, prior width, sample mean, and likelihood width (i.e., the value of $\sigma/\sqrt{N}$) respectively.</li>
+<li>Use "frozen" instances of the <code>scipy.stats.norm</code> continuous RV object to represent the prior PDF, likelihood function, and posterior PDF.  Strictly speaking, <em>the likelihood is not a PDF</em> (for $\mu$), but since we usually only need the likelihood to be specified up to an arbitrary constant factor, it is computationally convenient to represent the likelihood with a PDF, so we can use SciPy's built-in functions to compute it.</li>
+<li>Use the <code>FigLRAxes</code> class (provided in the incomplete module) to plot the prior and posterior PDFs against the left axis, and the likelihood function against the right axis.</li>
+<li>Generate a figure resembling the one on the right of Lec07 slide 14.  The relevant parameter values are provided in the template <code>.py</code> file.</li>
 </ul>
 </blockquote>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.3 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-2.3-(2-points):">Problem 2.3 (2 points):<a class="anchor-link" href="#Problem-2.3-(2-points):">&#182;</a></h3><p>Means of one kind or another (e.g., arithmetic or weighted) are often used to estimate parameters from a sample of measurements modeled with IID sampling uncertainties.  The <strong>central limit theorem</strong> (CLT) provides a motivation for this.  It shows that, for large sample sizes $N$, and when the sampling distribution has a finite variance, the sample mean has a PDF that converges to a normal distribution with a standard deviation that, importantly, <em>shrinks with sample size</em> $\propto 1/\sqrt{N}$.</p>
-<p>The Cauchy distribution does <em>not</em> have a finite variance; as a consequence, the CLT does not hold for the sample mean when the samples are from a Cauchy distribution.  Show this numerically:</p>
-<blockquote><ul>
-<li>Run your <code>cauchy_case</code> function many times (say, 1000, but use fewer for debugging!), with <code>plot=False</code>, collecting the posterior means and the sample means in separate arrays.  Use a largish sample size, say, $N=50$ or $100$.</li>
-<li>Use matplotlib's <code>hist</code> function to plot histograms of the posterior means and sample means.  Use its <code>density</code> parameter to plot the histograms normalized as piecewise-constant PDFs.  You can use the <code>alpha</code> (opacity) argument to make regions of overlap easier to discern.  Feel free to change the number of bins from the default value.</li>
-<li>Plot the Cauchy PDF for a single observation as a solid curve on the same plot.</li>
-<li>Comment on what the plot reveals about the behavior of the sample mean.</li>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=3.3 celltag_points=2" data-mime-type="text/markdown">
+<h3 id="Problem-3.3-(2-points):">Problem 3.3 (2 points):<a class="anchor-link" href="#Problem-3.3-(2-points):">&#182;</a></h3><blockquote><ul>
+<li>Write a second function, <code>plot_norm_norm2(mus, mu0, w0, dbar, w)</code>, that does the same computation and plotting <em>numerically</em>, along the lines of the binomial example in the Lab04 notebook, i.e., evaluating the prior and likelihood on a grid of $\mu$ values, computing the marginal likelihood numerically with the trapezoid rule, and using those ingredients to compute the posterior PDF on a grid.</li>
+<li>Have this function return the grid of posterior PDF values.</li>
+<li>In the <code>norm_norm.py</code> file, write a test function to verify normalization of the computed posterior (a stub is provided). In your notebook, run the test using the <code>pytest</code> command.</li>
 </ul>
 </blockquote>
 

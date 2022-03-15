@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assignment04</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Assignment05</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14515,98 +14515,82 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Assignment-04">Assignment 04<a class="anchor-link" href="#Assignment-04">&#182;</a></h1><p><strong>Due:</strong> 2022-03-10, 11:59 PM, as a Jupyter notebook (with related files) submitted via your repo in the course GitHub organization.  Edit the provided Solutions04 notebook with your solutions.</p>
+<h1 id="Assignment-05">Assignment 05<a class="anchor-link" href="#Assignment-05">&#182;</a></h1><p><strong>Due:</strong> 2022-03-17, 11:59 PM, as a Jupyter notebook (with related files) submitted via your repo in the course GitHub organization.  Edit the provided Solutions05 notebook with your solutions. Please <strong>do not modify the subproblem cells</strong> in your solutions notebook.</p>
+<p><em>Note that Problem 2.3 is for 5780 students only.</em></p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="0.-Add/commit-a-.gitignore-file-in-your-assignments-repo">0. Add/commit a .gitignore file in your assignments repo<a class="anchor-link" href="#0.-Add/commit-a-.gitignore-file-in-your-assignments-repo">&#182;</a></h2><p>Python, Jupyter, and other tools we'll use in the future create auxilliary files that are useful for running scripts, modules, and notebooks locally, but that should not be tracked and shared in your repo. Git supports the use of a <code>.gitignore</code> file at the top level of a repo, identifying files or groups of files (and folders) that should be ignored by Git. This file can also be used to make Git ignore platform-specific files that aren't useful to share, like the <code>.DS_Store</code> file that the macOS Finder creates in many folders (to hold file metadata).</p>
-<p>We are providing a <code>.gitignore</code> file to use in your assignment repo. <strong>Correctly adding and commiting the <code>.gitignore</code> file is required.</strong> You will <em>lose 0.5 point if it is not done correctly</em>. Fortunately, it's easy to do:</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>Your assignment again has a <code>univariate_bayes.py</code> file that implements a <code>univariate_bayes</code> module with a single class, <code>UnivariateBayesianInference</code>.  This version is a revision of the one provided for Assignment 04; it has been refactored, and it includes some enhancements.  For the problems in this week's assignment, you will further enhance the capabilities of <code>UnivariateBayesianInference</code>.  Note that stubs (incomplete blocks of code) are provided to guide some of your work.</p>
+<p>Your repo also has a <code>poisson_binomial_cauchy.py</code> file, meant to be used as module, with three classes that subclass <code>UnivariateBayesianInference</code>:</p>
 <ul>
-<li>Sync your copy of our LabResources folder using <code>git pull</code> (which you probably already did to get your copy of this assignment).</li>
-<li><strong>Copy</strong> (do not just move) the <code>dot-gitignore</code> file to the top level of your assignments repor. For me, I would put it inside my <code>tjl9-BDAOrg</code> folder, so its path would be `.../tjl9-BDAOrg/dot-gitignore'.</li>
-<li><strong>Rename</strong> the file to <code>.gitignore</code>. On many platforms, this will cause the file to disappear from file listings (e.g., it will vanish in a macOS Finder window, and it will not appear in a Linus <code>ls</code> file listing). Don't worry, it's still there. The leading dot makes <code>.gitignore</code> a hidden file on many platforms.</li>
-<li>Use Git to add and commit the <code>.gitignore</code> file.</li>
+<li><code>PoissonRateInference</code></li>
+<li><code>BinomialInference</code></li>
+<li><code>CauchyLocationInference</code></li>
 </ul>
-<p>That's it!</p>
-<p>If you use a tool (editor, IDE) that creates auxilliary files or folders in your repo that you don't want to track, feel free to <strong>add</strong> entries to the <code>.gitignore</code> file, directing Git not to track those files. But please do not remove entries from it.</p>
+<p>These classes appeared in the previous lab and assignment.</p>
+<p>As you modify the code, be sure to maintain docstrings:  revise the module docstring to note that you have revised the module's code, and provide docstrings for any new methods you write.  Comment your code appropriately.</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="1.-Enhancing-the-UnivariateBayesianInference-class">1. Enhancing the <em>UnivariateBayesianInference</em> class<a class="anchor-link" href="#1.-Enhancing-the-UnivariateBayesianInference-class">&#182;</a></h2><p>The assignment directory includes a <code>univariate_bayes.py</code> file that implements a <code>univariate_bayes</code> module with a single class, <code>UnivariateBayesianInference</code>; this code was introduced in Lab06.  This class is meant to be used as a <strong>base class</strong> that is inherited by a subclass written to solve univariate inference problems with a specific type of likelihood function and data.  Lab06 provided examples for binomial and Poisson cases.  For this problem, you will enhance the capabilities of <code>UnivariateBayesianInference</code>.</p>
-<p>Your repo also has a <code>binomial_poisson.py</code> file, also meant to be used as module, with two classes that subclass <code>UnivariateBayesianInference</code>:  <code>BinomialInference</code> and <code>PoissonRateInference</code>.  We discussed and used these classes in Lab06.  There we created instances of those classes in the same file that defined them; here, you'll import the classes from the module and work with them in your solutions notebook.</p>
+<h2 id="1.-Laplace-approximation-for-UnivariateBayesianInference">1. Laplace approximation for <em>UnivariateBayesianInference</em><a class="anchor-link" href="#1.-Laplace-approximation-for-UnivariateBayesianInference">&#182;</a></h2><p><code>UnivariateBayesianInference</code> has a stub method, <code>laplace</code>, for implementing Laplace's approximation to expectation integrals that arise in Bayesian inference.  For this problem, you'll complete the implementation, and demonstrate it on some examples.</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1.1 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-1.1-(2-points):">Problem 1.1 (2 points):<a class="anchor-link" href="#Problem-1.1-(2-points):">&#182;</a></h3><blockquote><p>Add code to the <code>__init__</code> method of the <code>UnivariateBayesianInference</code> class (defined in <code>univariate_bayes.py</code>) that computes the mean and standard deviation of the parameter's posterior PDF.  Store the results in two new data attributes:</p>
-<ul>
-<li><code>mean</code>, containing the posterior mean of the value of the parameter by quadrature</li>
-<li><code>std</code>, containing the posterior standard deviation by quadrature</li>
-</ul>
-<p>You may use quadrature functions in <code>NumPy</code> or <code>SciPy</code>. Be sure to maintain comments and docstrings:  revise the module docstring to note that you have revised the module's code, and provide brief comments for the added code.</p>
+<h3 id="Problem-1.1-(2-points):">Problem 1.1 (2 points):<a class="anchor-link" href="#Problem-1.1-(2-points):">&#182;</a></h3><blockquote><p>Complete the implementation of the <code>laplace</code> method.  The stub locates the peak of the integrand and finds the amplitude at the peak; you'll need to calculate the curvature and use it to compute and return the values indicated in the method's docstring.</p>
 </blockquote>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1.2 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-1.2-(2-points):">Problem 1.2 (2 points):<a class="anchor-link" href="#Problem-1.2-(2-points):">&#182;</a></h3><blockquote><p>Test the <code>mean</code> and <code>std</code> computations by creating one instance each of <code>PoissonRateInference</code> and <code>BinomialInference</code> in your solution notebook (with input arguments of your choosing) and comparing your quadrature-based mean and standard deviation posterior summaries with analytical formulas presented in lectures.  Do the comparison by calculating the percentage difference between the quadrature-based and formula-based results and displaying the the results and percentage differences in the notebook. Display the results with an appropriate level of precision (e.g., 2 or 3 significant digits), using Python's string formatting capability.  (See <a href="https://mkaz.blog/code/python-string-format-cookbook/">Python String Format Cookbook – mkaz.blog</a> for tips on this.)</p>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=1.2 celltag_points=3" data-mime-type="text/markdown">
+<h3 id="Problem-1.2-(3-points):">Problem 1.2 (3 points):<a class="anchor-link" href="#Problem-1.2-(3-points):">&#182;</a></h3><p>Demonstrate the operation of the <code>laplace</code> method in the notebook by doing the following for one example each using the Poisson, binomial, and Cauchy inference objects.  Choose or simulate data of modest size (modest number of counts for Poisson &amp; binomial; modest sample size for Cauchy), so the posterior PDFs are not too close to a normal PDF.</p>
+<blockquote><ul>
+<li>Illustrate the Laplace approximation for computing the marginal likelihood:  Plot the <em>quasi</em>posterior as a solid line, and plot the Gaussian approximation of the quasiposterior corresponding to the Laplace approximation for the marginal likelihood integral as a dashed line.</li>
+<li>Display (print in the notebook, with annotations/explanations) values of the marginal likelihood and posterior mean calculated by quadrature and by the Laplace approximation.  Use Python's string formatting to show the results with appropriate precision (e.g., so 2 or 3 digits of variation between the results are shown).</li>
+</ul>
 </blockquote>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.-Inference-with-the-Cauchy-distribution">2. Inference with the Cauchy distribution<a class="anchor-link" href="#2.-Inference-with-the-Cauchy-distribution">&#182;</a></h2><p>In Lab06 and Problem 1 the <code>UnivariateBayesianInference</code> base class was used to numerically compute results for inferences that we can handle analytically.  But this base class can also be used for problems that are not analytically tractable.  In this problem, you'll use it to do inference with data modeled with a <strong>Cauchy distribution</strong>.</p>
-<p>The Cauchy distribution is a special case of the Student's $t$ distribution covered in Lec08; it corresponds to Student's $t$ with degrees of freedom parameter $\nu=1$. It has an undefined mean and an infinite variance.  It is troublesome to work with in frequentist statistics.  Even it's maximum likelihood estimator has complicated sampling properties that pose not just computational challenges, but conceptual ones (the best frequentist methods require adopting something called the <em>conditional frequentist approach</em>, related to the likelihood principle).  In Bayesian inference, it poses no conceptual difficulties, but it must be handled numerically—which you'll do here.</p>
-<p>The Cauchy distribution is known in physics as the <em>Lorentzian distribution</em>, where in certain circumstances it describes the profile of spectral lines, and the distribution of particle mass peaks in accelerator experiments.  It also appears in problems where the ratio of two quantities with normal errors is of interest; when the quantities are uncorrelated with zero mean, the PDF for the ratio is a Cauchy distribution.  As noted above, the Student's $t$ distribution with 1 degree of freedom is a Cauchy distribution.  It also arises in geometric inference problems, as you will see in this problem.</p>
-<p>You can find basic information about the Cauchy distribution <a href="http://en.wikipedia.org/wiki/Cauchy_distribution">on Wikipedia</a> and in the <a href="http://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm">NIST Engineering Statistics Handbook</a>.</p>
+<h2 id="2.-Posterior-sampling-for-UnivariateBayesianInference">2. Posterior sampling for <code>UnivariateBayesianInference</code><a class="anchor-link" href="#2.-Posterior-sampling-for-UnivariateBayesianInference">&#182;</a></h2><p>For this problem, you'll add IID posterior sampling capability to the <code>UnivariateBayesianInference</code> base class and use it for some inference problems.  The class already has a method, <code>samp_cdf</code>, implementing sampling via the inverse-CDF method; you'll add a new method implementing the accept/reject method.</p>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.1 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-2.1-(2-points):">Problem 2.1 (2 points):<a class="anchor-link" href="#Problem-2.1-(2-points):">&#182;</a></h3><p>A rod of radioactive material is a distance $d$ behind a barrier (e.g., this could be a fuel rod inside a nuclear reactor). A narrow sensor strip is on the barrier, oriented orthogonal to the rod (and not near either of its ends). The rod is at an unknown position, $x_0$, along the sensor.  The sensor records the locations of $N$ gamma rays emitted by the rod, denoted $x_i$ (for $i=1$ to $N$).  We'll assume that $d$ is small compared to the length of the sensor, so that the sensor may be considered essentially infinite in length.</p>
-<p>The geometry is shown in the following figure, oriented looking down along the rod (shown as a large dot).</p>
-<p><img src="CauchyGeometry.png"/></p>
-<blockquote><p>Assume the rod emits gamma rays isotropically (i.e., with a uniform distribution in the angle $\theta$; consider only angles corresponding to detectable gamma rays).  Show that the PDF for the detected location of a single gamma ray, $x$, is a Cauchy distribution with location parameter $x_0$ and scale parameter $d$.</p>
+<h3 id="Problem-2.1-(2-points):">Problem 2.1 (2 points):<a class="anchor-link" href="#Problem-2.1-(2-points):">&#182;</a></h3><blockquote><p>Add a new method, with signature <code>sample_ar(self)</code>, that implements the accept/reject method for sampling from the posterior distribution.  Calling it (with no user-supplied arguments) should return a single sample from the posterior distribution.  Be sure to note quantities already computed in <code>__init__</code> that may be useful for your implementation.  In <code>__init__</code> a data attribute, <code>n_ar</code>, is initialized to 0.  Use this in your method to keep track of the total number of <em>candidate</em> samples <code>sample_ar</code> generates (i.e., the sum of rejected and accepted candidates).  You'll use this to estimate the efficiency of the sampler after repeated calls of <code>sample_ar</code>.</p>
 </blockquote>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.2 celltag_points=5" data-mime-type="text/markdown">
-<h3 id="Problem-2.2-(5-points):">Problem 2.2 (5 points):<a class="anchor-link" href="#Problem-2.2-(5-points):">&#182;</a></h3><p>Implement and demonstrate inference for the Cauchy location parameter, $x_0$ (using a uniform prior):</p>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.2 celltag_points=3" data-mime-type="text/markdown">
+<h3 id="Problem-2.2-(3-points):">Problem 2.2 (3 points):<a class="anchor-link" href="#Problem-2.2-(3-points):">&#182;</a></h3><p>Demonstrate the operation of the posterior sampling methods in the notebook by doing the following for one example each using the binomial and Cauchy inference objects.</p>
 <blockquote><ul>
-<li>Create a Python module <code>cauchy.py</code> with a class <code>CauchyLocationInference</code> that implements inference for the location of Cauchy-distributed data with a <em>known</em> scale parameter.</li>
-<li>In the notebook, define a function with signature <code>cauchy_case(x0, d, N, plot=True)</code> that does the following:<ol>
-<li>Use <code>scipy.stats.cauchy</code> to simulate a dataset of size <code>N</code> from a Cauchy distribution with location and scale <code>x0</code> and <code>d</code>.</li>
-<li>Create an instance of your <code>CauchyLocationInference</code> class for inferring <code>x0</code> with the simulated data.</li>
-<li>If the <code>plot</code> argument is True, plot the PDF for <code>x0</code>.</li>
-<li>If the <code>plot</code> argument is True, show the posterior mean for <code>x0</code> on the plot by using the computed <code>mean</code> data attribute, evaluating the PDF at that value, and plotting a marker (e.g., a large dot or diamond) on the curve just plotted in step 3.</li>
-<li>Return 2 (scalar) values: the value of the posterior mean, and the mean value of the samples in the simulated dataset.</li>
-</ol>
-</li>
-<li>Run the function 5 times, with the same arguments, to produce a single plot with 5 example posterior PDFs. Choose values for <code>x0</code> and <code>d</code> as you wish.  Use a small sample size (say, $N=5$).  Be sure to label all plot axes in this exercise, and feel free to adjust plot parameters (axis limits, line widths, etc.) to help communicate the results.</li>
+<li>Plot the posterior as a solid line (with the <code>plot</code> method of an inference instance), and plot a normalized histogram of a few thousand posterior samples from <code>sample_cdf</code> on the same plot.  You may need to use the <code>alpha</code> parameter in the plotting commands so the curve and histogram can both be seen.</li>
+<li>In a new figure, do the same thing, but now use your new <code>sample_ar</code> method.</li>
+<li>Use the posterior samples from <code>sample_ar</code> to compute the posterior mean and standard deviation. Display the values computed by quadrature and by posterior sampling in the notebook.  Use Python's string formatting to show the results with appropriate precision.</li>
+<li>Display the sampling efficiency in the notebook.</li>
 </ul>
 </blockquote>
 
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.3 celltag_points=2" data-mime-type="text/markdown">
-<h3 id="Problem-2.3-(2-points):">Problem 2.3 (2 points):<a class="anchor-link" href="#Problem-2.3-(2-points):">&#182;</a></h3><p>Means of one kind or another (e.g., arithmetic or weighted) are often used to estimate parameters from a sample of measurements modeled with IID sampling uncertainties.  The <strong>central limit theorem</strong> (CLT) provides a motivation for this.  It shows that, for large sample sizes $N$, and when the sampling distribution has a finite variance, the sample mean has a PDF that converges to a normal distribution with a standard deviation that, importantly, <em>shrinks with sample size</em> $\propto 1/\sqrt{N}$.</p>
-<p>The Cauchy distribution does <em>not</em> have a finite variance; as a consequence, the CLT does not hold for the sample mean when the samples are from a Cauchy distribution.  Show this numerically:</p>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput  celltag_problem=2.3 celltag_points=2 celltag_5780" data-mime-type="text/markdown">
+<h3 id="Problem-2.3-(2-points,-for-5780-students-only):">Problem 2.3 (2 points, for 5780 students only):<a class="anchor-link" href="#Problem-2.3-(2-points,-for-5780-students-only):">&#182;</a></h3><p>Find a <strong>highest posterior density (HPD) credible region</strong> for the Cauchy example:</p>
 <blockquote><ul>
-<li>Run your <code>cauchy_case</code> function many times (say, 1000, but use fewer for debugging!), with <code>plot=False</code>, collecting the posterior means and the sample means in separate arrays.  Use a largish sample size, say, $N=50$ or $100$.</li>
-<li>Use matplotlib's <code>hist</code> function to plot histograms of the posterior means and sample means.  Use its <code>density</code> parameter to plot the histograms normalized as piecewise-constant PDFs.  You can use the <code>alpha</code> (opacity) argument to make regions of overlap easier to discern.  Feel free to change the number of bins from the default value.</li>
-<li>Plot the Cauchy PDF for a single observation as a solid curve on the same plot.</li>
-<li>Comment on what the plot reveals about the behavior of the sample mean.</li>
+<li>Compute the posterior density for every posterior sample you collected using <code>sample_ar</code>.</li>
+<li>Sort the values, and use the sorted values to find the densities bounding 50% and 90% HPD regions.</li>
+<li>On a new figure, plot the PDF as a solid curve, and plot horizontal dashed or dotted lines indicating the density levels that bound the two HPD regions (the boundaries for the regions are just where these lines cross the curve).  Use Matplotlib's <code>axhline</code> function to plot the lines, and <code>annotate</code> to label each line with the corresponding probability or percentage.</li>
 </ul>
 </blockquote>
 
